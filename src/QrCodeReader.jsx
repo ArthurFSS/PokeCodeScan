@@ -82,9 +82,6 @@ const QrCodeReader = () => {
         onChange={handleColecaoChange}
         style={colecaoInputStyle}
       />
-      <button onClick={toggleCamera}>
-        Mudar para a câmera {facingMode === "environment" ? "frontal" : "traseira"}
-      </button>
       <QrReader
         onResult={(result, _, codeReader) => {
           if (!codeReader.processingScan && result) {
