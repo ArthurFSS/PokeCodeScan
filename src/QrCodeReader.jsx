@@ -89,6 +89,11 @@ const QrCodeReader = () => {
             });
           }
         }}
+        constraints={{
+          video: {
+            facingMode: { exact: "environment" },
+          },
+        }}
         style={{ width: '100%' }}
       />
       <p style={msgStyle}>{data.msg}</p>
