@@ -7,7 +7,8 @@ const QrCodeReader = () => {
   const [processingScan, setProcessingScan] = useState(false);
   const [colecao, setColecao] = useState('');
   const [facingMode, setFacingMode] = useState("environment"); // Estado para armazenar a facingMode
-  const url = 'http://localhost:5010/';
+  //const url = 'http://localhost:5010/';
+  const url = 'https://app.noida.tech/';
 
   const handleScan = async (result) => {
     if (result) {
@@ -94,10 +95,8 @@ const QrCodeReader = () => {
           }
         }}
         constraints={{
-          video: {
-            facingMode: facingMode, // Usar diretamente o valor do estado facingMode
-          },
-        }}
+          facingMode: facingMode
+      }}
         style={{ width: '100%' }}
       />
       <p style={msgStyle}>{data.msg}</p>
