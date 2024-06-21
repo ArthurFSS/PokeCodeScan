@@ -5,14 +5,15 @@ import axios from 'axios';
 const QrCodeReader = () => {
   const [data, setData] = useState({ msg: 'Nenhum código', codigo: '', sucesso: null });
   const [processingScan, setProcessingScan] = useState(false);
-  const [colecao, setColecao] = useState(''); // Estado para armazenar o valor da coleção
+  const [colecao, setColecao] = useState('');
+  const [facingMode, setFacingMode] = useState("environment"); // Estado para armazenar a facingMode
   const url = 'http://localhost:5010/';
 
   const handleScan = async (result) => {
-    if (result) {  
+    if (result) {
       const request = {
         codigo: result.text,
-        colecao: colecao // Usando o valor do estado colecao aqui
+        colecao: colecao
       };
 
       if (!processingScan) {
@@ -43,12 +44,14 @@ const QrCodeReader = () => {
       });
   };
 
-  // Função para lidar com a mudança no campo de coleção
   const handleColecaoChange = (event) => {
     setColecao(event.target.value);
   };
 
-  // Estilos inline para o campo de coleção
+  const toggleCamera = () => {
+    setFacingMode((prevMode) => (prevMode === "environment" ? "user" : "environment"));
+  };
+
   const colecaoInputStyle = {
     marginBottom: '10px',
     padding: '8px',
@@ -57,7 +60,6 @@ const QrCodeReader = () => {
     boxSizing: 'border-box'
   };
 
-  // Estilos inline para as mensagens
   const msgStyle = {
     color: data.sucesso ? 'green' : 'red',
     fontWeight: 'bold',
@@ -72,7 +74,6 @@ const QrCodeReader = () => {
   return (
     <div>
       <h1>Leitor de Códigos</h1>
-      {/* Campo de entrada para a coleção */}
       <input
         type="text"
         placeholder="Digite a coleção"
@@ -80,6 +81,9 @@ const QrCodeReader = () => {
         onChange={handleColecaoChange}
         style={colecaoInputStyle}
       />
+      <button onClick={toggleCamera}>
+        Mudar para a câmera {facingMode === "environment" ? "frontal" : "traseira"}
+      </button>
       <QrReader
         onResult={(result, _, codeReader) => {
           if (!codeReader.processingScan && result) {
@@ -91,7 +95,7 @@ const QrCodeReader = () => {
         }}
         constraints={{
           video: {
-            facingMode: { exact: "environment" },
+            facingMode: { exact: facingMode },
           },
         }}
         style={{ width: '100%' }}
