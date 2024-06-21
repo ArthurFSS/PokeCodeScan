@@ -6,7 +6,7 @@ const QrCodeReader = () => {
   const [data, setData] = useState({ msg: 'Nenhum código', codigo: '', sucesso: null });
   const [processingScan, setProcessingScan] = useState(false);
   const [colecao, setColecao] = useState('');
-  const [facingMode, setFacingMode] = useState("environment"); // Estado para armazenar a facingMode
+
   //const url = 'http://localhost:5010/';
   const url = 'https://app.noida.tech/';
 
@@ -49,10 +49,6 @@ const QrCodeReader = () => {
     setColecao(event.target.value);
   };
 
-  const toggleCamera = () => {
-    setFacingMode((prevMode) => (prevMode === "environment" ? "user" : "environment"));
-  };
-
   const colecaoInputStyle = {
     marginBottom: '10px',
     padding: '8px',
@@ -92,7 +88,7 @@ const QrCodeReader = () => {
           }
         }}
         constraints={{
-          facingMode: facingMode
+          facingMode: "environment"
       }}
         style={{ width: '100%' }}
       />
