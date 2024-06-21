@@ -95,7 +95,7 @@ const QrCodeReader = () => {
         }}
         constraints={{
           video: {
-            facingMode: { exact: facingMode },
+            facingMode: facingMode, // Usar diretamente o valor do estado facingMode
           },
         }}
         style={{ width: '100%' }}
