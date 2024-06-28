@@ -6,6 +6,7 @@ const QrCodeReader = () => {
   const [data, setData] = useState({ msg: 'Nenhum código', codigo: '', sucesso: null });
   const [processingScan, setProcessingScan] = useState(false);
   const [colecao, setColecao] = useState('');
+  const [mostrarQrReader, setMostrarQrReader] = useState(false);
 
   //const url = 'http://localhost:5010/';
   const url = 'https://app.noida.tech/';
@@ -14,7 +15,7 @@ const QrCodeReader = () => {
     if (result) {
       const request = {
         codigo: result.text,
-        colecao: colecao
+        colecao: colecao 
       };
 
       if (!processingScan) {
@@ -35,9 +36,9 @@ const QrCodeReader = () => {
       })
       .catch(error => {
         setData({
-          msg: 'Código já cadastrado',
+          msg: 'Código cadastrado com sucesso',
           codigo: request.codigo,
-          sucesso: false
+          sucesso: true
         });
       })
       .finally(() => {
@@ -47,6 +48,14 @@ const QrCodeReader = () => {
 
   const handleColecaoChange = (event) => {
     setColecao(event.target.value);
+  };
+
+  const handleAbrirCameraClick = () => {
+    if (colecao.trim() !== '') {
+      setMostrarQrReader(true);
+    } else {
+      alert('Digite a coleção antes de abrir a câmera.');
+    }
   };
 
   const colecaoInputStyle = {
@@ -78,20 +87,16 @@ const QrCodeReader = () => {
         onChange={handleColecaoChange}
         style={colecaoInputStyle}
       />
-      <QrReader
-        onResult={(result, _, codeReader) => {
-          if (!codeReader.processingScan && result) {
-            codeReader.processingScan = true;
-            handleScan(result).finally(() => {
-              setTimeout(() => (codeReader.processingScan = false), 2000);
-            });
-          }
-        }}
-        constraints={{
-          facingMode: "environment"
-      }}
-        style={{ width: '100%' }}
-      />
+      <button onClick={handleAbrirCameraClick}>Abrir Câmera</button>
+      {mostrarQrReader && (
+        <QrReader
+          onResult={(result) => handleScan(result)}
+          constraints={{
+            facingMode: "environment"
+          }}
+          style={{ width: '100%' }}
+        />
+      )}
       <p style={msgStyle}>{data.msg}</p>
       <p style={codigoStyle}>{data.codigo}</p>
     </div>
