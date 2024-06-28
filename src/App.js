@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import QrCodeReader from './QrCodeReader';
 import Estoque from './Estoque';
-import Envio from './Envio';
 
 const App = () => {
   const navStyle = {
